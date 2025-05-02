@@ -8,7 +8,7 @@ import java.io.File;
 public class TP3FichierException extends TP3Exception {
 
 
-    // doit conserver les fichiers impliqué trouvé une façon de faire
+    // a verifier mais je pense c'est correct
 
     File file;
 
