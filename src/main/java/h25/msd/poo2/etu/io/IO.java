@@ -1,3 +1,5 @@
+/*DIARRA*/
+
 package h25.msd.poo2.etu.io;
 
 import h25.msd.poo2.echange.AlgorithmeI;
