@@ -1,3 +1,5 @@
+/* Danielle Mafouo Fouodji */
+
 package h25.msd.poo2.etu.utilisateur;
 
 import java.io.DataInputStream;
@@ -20,8 +22,8 @@ public class Utilisateur extends AbstractUtilisateur {
             dos.writeInt(nombreUsages);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }finally {
-            if (dos!=null)
+        } finally {
+            if (dos != null)
                 try {
                     dos.close();
                 } catch (IOException e) {
@@ -29,16 +31,17 @@ public class Utilisateur extends AbstractUtilisateur {
                 }
         }
     }
+
     public static AbstractUtilisateur chargeUtilisateur(DataInputStream dis) {
         Utilisateur utilisateur;
         try {
             String nomUtilisateur = dis.readUTF();
             int nombreUsage = dis.readInt();
-          utilisateur = new Utilisateur(nomUtilisateur);
+            utilisateur = new Utilisateur(nomUtilisateur);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }finally {
-            if (dis!=null)
+        } finally {
+            if (dis != null)
                 try {
                     dis.close();
                 } catch (IOException e) {
@@ -47,6 +50,7 @@ public class Utilisateur extends AbstractUtilisateur {
         }
         return utilisateur;
     }
+
     public int getNombreUsages() {
         return nombreUsages;
     }

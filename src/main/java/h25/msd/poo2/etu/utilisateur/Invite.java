@@ -1,3 +1,5 @@
+/* Danielle Mafouo Fouodji */
+
 package h25.msd.poo2.etu.utilisateur;
 
 import java.io.DataInputStream;
@@ -29,8 +31,8 @@ public class Invite extends AbstractUtilisateur {
             invite = new Invite();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }finally {
-            if(dis!=null)
+        } finally {
+            if (dis != null)
                 try {
                     dis.close();
                 } catch (IOException e) {

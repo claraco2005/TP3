@@ -1,4 +1,5 @@
 /* Clara ,Diarra,Danielle*/
+
 package h25.msd.poo2.etu.io;
 
 import h25.msd.poo2.echange.AlgorithmeI;
@@ -65,4 +66,5 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
     public AbstractUtilisateur chargeUtilisateur() throws TP3Exception {
         return utilisateurIO.chargeUtilisateur(new File("utilisateurs"));
     }
+
 }

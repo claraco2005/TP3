@@ -1,3 +1,4 @@
+/* Danielle Mafouo Fouodji */
 package h25.msd.poo2.etu.utilisateur;
 
 import java.io.DataInputStream;
@@ -29,8 +30,8 @@ public class Administrateur extends Utilisateur {
             dos.writeInt(nombreFichierGenere);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }finally {
-            if (dos!=null)
+        } finally {
+            if (dos != null)
                 try {
                     dos.close();
                 } catch (IOException e) {
@@ -42,22 +43,22 @@ public class Administrateur extends Utilisateur {
     public static AbstractUtilisateur chargeUtilisateur(DataInputStream dis) {
         Administrateur administrateur;
 
-            try {
-                String nomAdministrateur=dis.readUTF();
-                int nombreUsage=dis.readInt();
-                int nombreFichiers=dis.readInt();
-                administrateur=new Administrateur(nomAdministrateur);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }finally {
-                if(dis!=null)
-                    try {
-                        dis.close();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-            }
-            return administrateur;
+        try {
+            String nomAdministrateur = dis.readUTF();
+            int nombreUsage = dis.readInt();
+            int nombreFichiers = dis.readInt();
+            administrateur = new Administrateur(nomAdministrateur);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (dis != null)
+                try {
+                    dis.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+        }
+        return administrateur;
     }
 
 }

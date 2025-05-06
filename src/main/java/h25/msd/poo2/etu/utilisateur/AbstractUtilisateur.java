@@ -1,3 +1,6 @@
+
+/* Danielle Mafouo Fouodji */
+
 package h25.msd.poo2.etu.utilisateur;
 
 import java.io.*;
@@ -26,10 +29,10 @@ public abstract class AbstractUtilisateur {
             String type = dis.readUTF();
             switch (type) {
                 case "invite":
-                  abstractUtilisateur = Invite.chargeUtilisateur(dis);
+                    abstractUtilisateur = Invite.chargeUtilisateur(dis);
                     break;
                 case "utilisateur":
-                    abstractUtilisateur =  Utilisateur.chargeUtilisateur(dis);
+                    abstractUtilisateur = Utilisateur.chargeUtilisateur(dis);
                     break;
                 case "administrateur":
                     abstractUtilisateur = Administrateur.chargeUtilisateur(dis);

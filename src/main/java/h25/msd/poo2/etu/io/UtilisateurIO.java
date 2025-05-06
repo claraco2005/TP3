@@ -18,9 +18,9 @@ public class UtilisateurIO {
         DataOutputStream dos = null;
 
         try {
-            fos=new FileOutputStream("utilisateur.uti");
-            bos=new BufferedOutputStream(fos);
-            dos=new DataOutputStream(bos);
+            fos = new FileOutputStream("utilisateur.uti");
+            bos = new BufferedOutputStream(fos);
+            dos = new DataOutputStream(bos);
             abstractUtilisateur.sauvegardeUtilisateur(dos);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -34,9 +34,9 @@ public class UtilisateurIO {
         DataInputStream dis = null;
 
         try {
-            fis=new FileInputStream(fichier);
-            bis=new BufferedInputStream(fis);
-            dis=new DataInputStream(bis);
+            fis = new FileInputStream(fichier);
+            bis = new BufferedInputStream(fis);
+            dis = new DataInputStream(bis);
             return AbstractUtilisateur.chargeUtilisateur(dis);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
