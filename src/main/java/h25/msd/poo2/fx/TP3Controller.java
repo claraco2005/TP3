@@ -1,7 +1,5 @@
 package h25.msd.poo2.fx;
 
-import h25.msd.poo2.echange.*;
-import h25.msd.poo2.etu.Model;
 import h25.msd.poo2.etu.exception.TP3Exception;
 import h25.msd.poo2.etu.utilisateur.AbstractUtilisateur;
 import h25.msd.poo2.etu.utilisateur.Administrateur;
@@ -13,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import h25.msd.poo2.echange.*;
+import h25.msd.poo2.etu.Model;
 import javafx.util.StringConverter;
 
 import java.io.File;
@@ -81,6 +81,12 @@ public class TP3Controller implements ApplicationUI {
 
     @FXML
     private ComboBox<AbstractUtilisateur> userComboBox;
+//
+//    @FXML
+//    private Label nombreFichiersLabel;
+//
+//    @FXML
+//    private Label nombreUsagesLabel;
 
     @FXML
     void decrypte(ActionEvent event) {
@@ -141,10 +147,7 @@ public class TP3Controller implements ApplicationUI {
 
         applicationModel = new Model();
         applicationModel.initialise(this);
-        if (gestionnaireFichiers != null) {
-            gestionnaireFichiers.prepareDossiersRequis();
-
-        }
+        gestionnaireFichiers.prepareDossiersRequis();
 
         prepareCreateurAlgo();
         createAlgosMenu();
@@ -158,6 +161,7 @@ public class TP3Controller implements ApplicationUI {
     }
 
     private void initUtilisateurs() {
+        userComboBox.getItems().clear();
         userComboBox.getItems().addAll(
                 new Administrateur("Admin"),
                 new Invite(),
@@ -176,8 +180,18 @@ public class TP3Controller implements ApplicationUI {
             }
 
             @Override
-            public Utilisateur fromString(String string) {
-                return new Utilisateur(string);
+            public AbstractUtilisateur fromString(String string) {
+                AbstractUtilisateur retUtilisateur = null;
+                List<AbstractUtilisateur> users = userComboBox.getItems();
+                for (AbstractUtilisateur user : users) {
+                    if (user.getNom().equals(string)) {
+                        retUtilisateur = user;
+                    }
+                }
+                if (retUtilisateur==null) {
+                    retUtilisateur = new Utilisateur(string);
+                }
+                return retUtilisateur;
             }
         });
         userComboBox.setOnAction(event -> {
@@ -185,6 +199,12 @@ public class TP3Controller implements ApplicationUI {
             if (!userComboBox.getItems().contains(utilisateurName)) {
                 userComboBox.getItems().add(utilisateurName);
             }
+//            if (utilisateurName instanceof Administrateur admin) {
+//                nombreFichiersLabel.setText(String.valueOf(admin.getNombreFichierGenere()));
+//            }
+//            if (utilisateurName instanceof Utilisateur utilisateur) {
+//                nombreUsagesLabel.setText(String.valueOf(utilisateur.getNombreUsages()));
+//            }
 
         });
     }
@@ -414,6 +434,12 @@ public class TP3Controller implements ApplicationUI {
         } catch (TP3Exception e) {
             informeUtilisateur(e.getMessage());
         }
+    }
+
+    @FXML
+    void reinitialiseUtilisateur(ActionEvent event) {
+        initUtilisateurs();
+
     }
 
 
