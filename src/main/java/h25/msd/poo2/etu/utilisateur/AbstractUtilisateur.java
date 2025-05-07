@@ -27,16 +27,12 @@ public abstract class AbstractUtilisateur {
         AbstractUtilisateur abstractUtilisateur = null;
         try {
             String type = dis.readUTF();
-            switch (type) {
-                case "invite":
-                    abstractUtilisateur = Invite.chargeUtilisateur(dis);
-                    break;
-                case "utilisateur":
-                    abstractUtilisateur = Utilisateur.chargeUtilisateur(dis);
-                    break;
-                case "administrateur":
-                    abstractUtilisateur = Administrateur.chargeUtilisateur(dis);
-                    break;
+            if (type == "invite") {
+                abstractUtilisateur = Invite.chargeUtilisateur(dis);
+            } else if (type == "administrateur") {
+                abstractUtilisateur = Administrateur.chargeUtilisateur(dis);
+            } else {
+                abstractUtilisateur = Utilisateur.chargeUtilisateur(dis);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

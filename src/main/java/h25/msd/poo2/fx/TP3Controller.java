@@ -1,3 +1,4 @@
+
 package h25.msd.poo2.fx;
 
 import h25.msd.poo2.etu.exception.TP3Exception;
@@ -188,7 +189,7 @@ public class TP3Controller implements ApplicationUI {
                         retUtilisateur = user;
                     }
                 }
-                if (retUtilisateur==null) {
+                if (retUtilisateur == null) {
                     retUtilisateur = new Utilisateur(string);
                 }
                 return retUtilisateur;

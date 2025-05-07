@@ -7,12 +7,9 @@ import java.io.File;
 
 public class TP3FichierException extends TP3Exception {
 
-
-    // a verifier mais je pense c'est correct
-
     File file;
 
-    public TP3FichierException(String message, AbstractUtilisateur utilisateur , File file ) {
+    public TP3FichierException(String message, AbstractUtilisateur utilisateur, File file) {
         super(message, utilisateur);
         this.file = file;
 
