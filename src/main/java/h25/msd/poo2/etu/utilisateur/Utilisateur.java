@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Utilisateur extends AbstractUtilisateur {
+
     private int nombreUsages = 0; //encryption et decryption
 
     public Utilisateur(String nom) {

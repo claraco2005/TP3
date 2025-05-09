@@ -15,6 +15,7 @@ public class TP3FichierException extends TP3Exception {
 
     }
 
+
     public File getFile() {
         return file;
     }
