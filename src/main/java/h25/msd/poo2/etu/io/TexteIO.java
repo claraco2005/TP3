@@ -1,6 +1,7 @@
 /*CLARA KABRAN*/
 package h25.msd.poo2.etu.io;
 
+import h25.msd.poo2.echange.ApplicationUI;
 import h25.msd.poo2.etu.io.exception.TP3FichierException;
 import h25.msd.poo2.etu.utilisateur.AbstractUtilisateur;
 import h25.msd.poo2.etu.utilisateur.Administrateur;
@@ -13,11 +14,10 @@ import java.util.Map;
 
 public class TexteIO {
 
-    AbstractUtilisateur utilisateur;
+    ApplicationUI ui;
 
-
-    public TexteIO(AbstractUtilisateur utilisateur) {
-        this.utilisateur = utilisateur;
+    public TexteIO(ApplicationUI ui) {
+        this.ui = ui;
     }
 
     /**
@@ -46,7 +46,7 @@ public class TexteIO {
             }
 
         } catch (IOException e) {
-            throw new TP3FichierException("Erreur lors de l'écriture", utilisateur, fichier);
+            throw new TP3FichierException("Erreur lors de l'écriture", ui.getUtilisateur(), fichier);
         } finally {
             if (bw != null) {
                 try {
@@ -86,7 +86,7 @@ public class TexteIO {
                 sb.append(ChaineDeCaractereObtenu).append(System.lineSeparator());
             }
         } catch (IOException e) {
-            throw new TP3FichierException("Erreur lors de la lecture", utilisateur, fichier);
+            throw new TP3FichierException("Erreur lors de la lecture", ui.getUtilisateur(), fichier);
         }
 
         return sb.toString();
@@ -112,7 +112,7 @@ public class TexteIO {
                 }
             }
         } catch (IOException e) {
-            throw new TP3FichierException("Erreur lors de la lecture de configuration.txt", utilisateur, fichier);
+            throw new TP3FichierException("Erreur lors de la lecture de configuration.txt", ui.getUtilisateur(), fichier);
         }
         return map;
     }
