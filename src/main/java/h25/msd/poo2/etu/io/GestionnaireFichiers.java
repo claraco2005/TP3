@@ -16,10 +16,18 @@ import java.io.File;
 public class GestionnaireFichiers implements GestionnaireFichierI {
     ApplicationUI ui;
     UtilisateurIO utilisateurIO;
+    TexteIO texteIO;
     File fichiers = new File("./");
+
+        // a averifier
+    private File dossierEncryption = new File("encryptions");
+    private File dossierOriginaux = new File("texte-originaux");
+    private File dossierParametres = new File("parametres");
+    private File dossierUtilisateur = new File("utilisateurs");
 
     public GestionnaireFichiers(ApplicationUI ui) {
         utilisateurIO = new UtilisateurIO(ui);
+        texteIO = new TexteIO();
         this.ui = ui;
     }
 
@@ -42,18 +50,52 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
 
     }
 
+    /***
+     * Enregistre le texte reçu en paramètre dans le fichier reçu en paramètre à l’aide de la classe
+     * TexteIO.
+     * @param fichier
+     * @param texte
+     * @throws TP3Exception
+     */
     @Override
     public void enregistreTexte(File fichier, String texte) throws TP3Exception {
 
+        try {
+            texteIO.enregistreTexte(fichier, texte);
+        } catch (TP3FichierException e) {
+            throw new TP3Exception("Cher(e) " + e.getUtilisateur().getNom() + "Il s'est produit une" + e.getMessage() + "\n avec le fichier " + e.getFile().getName(), e.getUtilisateur()); // demander au prof sinon le nom de l,utilisateur va apparaitre encore
+        }
+
     }
+
 
     @Override
     public String chargeTexte(File fichier) throws TP3Exception {
-        return "";
+
+        try {
+            return texteIO.chargeText(fichier);
+        } catch (TP3FichierException e) {
+            throw new TP3Exception("Cher(e) " + e.getUtilisateur().getNom() + "Il s'est produit une" + e.getMessage() + "\n avec le fichier " + e.getFile().getName(), e.getUtilisateur()); // demander au prof sinon le nom de l,utilisateur va apparaitre encore
+        }
+
+
     }
+
 
     @Override
     public File getDossier(Dossiers dossier) {
+
+        File fichier = null ;
+
+        switch (dossier){
+            case ENCRYPTIONS :
+                fichier = dossierEncryption;
+            case PARAMETRES:
+                fichier = dossierParametres;
+            case UTILISATEURS:
+                fichier = dossierUtilisateur;
+
+        }
         return null;
     }
 

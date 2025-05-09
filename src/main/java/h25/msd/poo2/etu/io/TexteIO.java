@@ -16,7 +16,7 @@ public class TexteIO {
 
     ApplicationUI ui;
 
-    public TexteIO(ApplicationUI ui) {
+    public TexteIO() {
         this.ui = ui;
     }
 
@@ -97,13 +97,12 @@ public class TexteIO {
 
         Map<String, String> map = new HashMap<>();
         File fichier = new File("configuration.txt");
-        FileReader fr = null;
         BufferedReader br = null;
 
         try {
 
-            fr = new FileReader(fichier);
-            br = new BufferedReader(fr);
+            br = new BufferedReader(new InputStreamReader(new TexteIO().getClass().getResourceAsStream("configuration.txt")));
+
             String ligne;
             while ((ligne = br.readLine()) != null) {
                 if (ligne.contains(":")) {
