@@ -1,5 +1,6 @@
 package h25.msd.poo2.etu.algo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import h25.msd.poo2.echange.AlgorithmeI;
 
 import java.util.*;
@@ -12,9 +13,10 @@ public abstract class AbstractAlgoCryptographique implements AlgorithmeI {
     private List<Character> alphabetMajuscule = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
     private List<Character> caractereSpeciaux = Arrays.asList(':', '‘', ',', '.', ';', '!', '?', '"', '-', ' ', '#');
     private List<Character> nombres = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    @JsonIgnore
     private Character CHARACTERE_NON_SUPPORTE = '#';
 
-
+    @JsonIgnore
     public Map<Character, Integer> getCharMap() {
         return charMap;
     }
@@ -90,7 +92,7 @@ public abstract class AbstractAlgoCryptographique implements AlgorithmeI {
         }
         return mot;
     }
-
+    @JsonIgnore
     public Character getCHARACTERE_NON_SUPPORTE() {
         return CHARACTERE_NON_SUPPORTE;
     }

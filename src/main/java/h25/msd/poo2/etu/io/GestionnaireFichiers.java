@@ -11,6 +11,7 @@ import h25.msd.poo2.etu.io.exception.TP3FichierException;
 import h25.msd.poo2.etu.utilisateur.AbstractUtilisateur;
 
 import java.io.File;
+import java.util.Map;
 
 
 public class GestionnaireFichiers implements GestionnaireFichierI {
@@ -18,8 +19,11 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
     UtilisateurIO utilisateurIO;
     TexteIO texteIO;
     File fichiers = new File("./");
+    private IO io;
+    Map<String, String> propriete;
+    Dossiers enume;
 
-        // a averifier
+    // a averifier
     private File dossierEncryption = new File("encryptions");
     private File dossierOriginaux = new File("texte-originaux");
     private File dossierParametres = new File("parametres");
@@ -28,7 +32,14 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
     public GestionnaireFichiers(ApplicationUI ui) {
         utilisateurIO = new UtilisateurIO(ui);
         texteIO = new TexteIO();
+        try {
+            this.propriete = texteIO.chargeRessource();
+        } catch (TP3FichierException e) {
+            throw new RuntimeException(e);
+        }
         this.ui = ui;
+        this.io = new IO(propriete);
+
     }
 
     @Override
@@ -40,6 +51,11 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         if (!fichierUtilisateur.exists()) {
             fichierUtilisateur.mkdir();
         }
+        File dossierParametres = new File("parametres");
+        if (!dossierParametres.exists()) {
+            dossierParametres.mkdir();
+
+        }
     }
 
     @Override
@@ -47,6 +63,7 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         File dossierUtilisateur = new File("utilisateurs/utilisateur.uti");
         if (dossierUtilisateur.isFile())
             dossierUtilisateur.delete();
+
 
     }
 
@@ -68,7 +85,6 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
 
     }
 
-
     @Override
     public String chargeTexte(File fichier) throws TP3Exception {
 
@@ -81,27 +97,14 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
 
     }
 
-
     @Override
     public File getDossier(Dossiers dossier) {
-
-        File fichier = null ;
-
-        switch (dossier){
-            case ENCRYPTIONS :
-                fichier = dossierEncryption;
-            case PARAMETRES:
-                fichier = dossierParametres;
-            case UTILISATEURS:
-                fichier = dossierUtilisateur;
-
-        }
-        return null;
+        return new File("fichiers/"+dossier.name());
     }
 
     @Override
     public void sauvegarderParametreSelectionne(AlgorithmeI algo) throws TP3Exception {
-
+        io.sauvegardeAlgo(algo);
     }
 
     @Override

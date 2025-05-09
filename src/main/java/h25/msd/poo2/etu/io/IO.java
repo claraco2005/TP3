@@ -7,6 +7,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import h25.msd.poo2.echange.AlgorithmeAvecParametreI;
 import h25.msd.poo2.echange.AlgorithmeI;
 import h25.msd.poo2.etu.algo.DecalageCle;
+import h25.msd.poo2.etu.algo.DecalageFixe;
 import h25.msd.poo2.etu.algo.DecalageParametre;
 import h25.msd.poo2.etu.algo.RotationParametre;
 
@@ -21,6 +22,8 @@ import java.util.Map;
 public class IO {
     private Map<String, String> propriete ;
 
+    String BASE_PATH= "fichiers/dossiersParametres/";
+
     public IO(Map<String, String> propriete) {
         this.propriete = propriete;
     }
@@ -30,29 +33,32 @@ public class IO {
        String format = propriete.getOrDefault("format-fichiers-parametres", "json");
        String nomFichier = nomAlgo + "."+ format;
 
-        File fichier = new File(nomFichier);
-
-       if(format.equals("json")) {
-           ObjectMapper mapper = new ObjectMapper();
-           try{
-               mapper.writeValue(fichier, algo);
-               System.out.println("success json file");
-           } catch (JsonMappingException e) {
-               throw new RuntimeException(e);
-           } catch (JsonGenerationException e) {
-               throw new RuntimeException(e);
-           } catch (IOException e) {
-               throw new RuntimeException(e);
-           }
-       }else if (format.equals("xml")) {
-           XmlMapper xmlMapper = new XmlMapper();
-           try {
-               xmlMapper.writeValue(fichier, algo);
-               System.out.println("success xml file");
-           } catch (IOException e) {
-               throw new RuntimeException(e);
-           }
-       }
+        File fichier = new File( nomFichier);
+        if(algo instanceof AlgorithmeAvecParametreI){
+            if(!fichier.exists()) {
+                if (format.equals("json")) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        mapper.writeValue(fichier, algo);
+                        System.out.println("success json file");
+                    } catch (JsonMappingException e) {
+                        throw new RuntimeException(e);
+                    } catch (JsonGenerationException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else if (format.equals("xml")) {
+                    XmlMapper xmlMapper = new XmlMapper();
+                    try {
+                        xmlMapper.writeValue(fichier, algo);
+                        System.out.println("success xml file");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
 
     }
 
@@ -64,11 +70,11 @@ public class IO {
 
     public static void main(String[] args) {
         Map<String, String> propriete = new HashMap<>();
-        propriete.put("format-fichiers-parametres", "xml");
+        propriete.put("format-fichiers-parametres", "json");
         IO io = new IO(propriete);
-//        io.sauvegardeAlgo(new RotationParametre());
-//        io.sauvegardeAlgo(new DecalageCle());
-//        io.sauvegardeAlgo(new DecalageParametre());
         io.sauvegardeAlgo(new RotationParametre());
+        io.sauvegardeAlgo(new DecalageCle());
+        io.sauvegardeAlgo(new DecalageParametre());
+        io.sauvegardeAlgo(new DecalageFixe());
     }
 }
