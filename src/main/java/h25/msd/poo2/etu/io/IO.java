@@ -22,7 +22,7 @@ import java.util.Map;
 public class IO {
     private Map<String, String> propriete ;
 
-    String BASE_PATH= "fichiers/dossiersParametres/";
+
 
     public IO(Map<String, String> propriete) {
         this.propriete = propriete;
@@ -32,33 +32,37 @@ public class IO {
        String nomAlgo = algo.getNom();
        String format = propriete.getOrDefault("format-fichiers-parametres", "json");
        String nomFichier = nomAlgo + "."+ format;
-
-        File fichier = new File( nomFichier);
-        if(algo instanceof AlgorithmeAvecParametreI){
-            if(!fichier.exists()) {
-                if (format.equals("json")) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    try {
-                        mapper.writeValue(fichier, algo);
-                        System.out.println("success json file");
-                    } catch (JsonMappingException e) {
-                        throw new RuntimeException(e);
-                    } catch (JsonGenerationException e) {
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                } else if (format.equals("xml")) {
-                    XmlMapper xmlMapper = new XmlMapper();
-                    try {
-                        xmlMapper.writeValue(fichier, algo);
-                        System.out.println("success xml file");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+        String BASE_PATH= "parametres/";
+        File dossier = new File("parametres");
+        if(dossier.isDirectory()){
+            File fichier = new File(BASE_PATH+ nomFichier);
+            if(algo instanceof AlgorithmeAvecParametreI){
+                if(!fichier.exists()) {
+                    if (format.equals("json")) {
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            mapper.writeValue(fichier, algo);
+                            System.out.println("success json file");
+                        } catch (JsonMappingException e) {
+                            throw new RuntimeException(e);
+                        } catch (JsonGenerationException e) {
+                            throw new RuntimeException(e);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else if (format.equals("xml")) {
+                        XmlMapper xmlMapper = new XmlMapper();
+                        try {
+                            xmlMapper.writeValue(fichier, algo);
+                            System.out.println("success xml file");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
         }
+
 
     }
 

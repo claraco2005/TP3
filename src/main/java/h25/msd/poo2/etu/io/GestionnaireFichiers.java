@@ -2,10 +2,7 @@
 
 package h25.msd.poo2.etu.io;
 
-import h25.msd.poo2.echange.AlgorithmeI;
-import h25.msd.poo2.echange.ApplicationUI;
-import h25.msd.poo2.echange.Dossiers;
-import h25.msd.poo2.echange.GestionnaireFichierI;
+import h25.msd.poo2.echange.*;
 import h25.msd.poo2.etu.exception.TP3Exception;
 import h25.msd.poo2.etu.io.exception.TP3FichierException;
 import h25.msd.poo2.etu.utilisateur.AbstractUtilisateur;
@@ -39,7 +36,7 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         }
         this.ui = ui;
         this.io = new IO(propriete);
-
+        prepareDossiersRequis();
     }
 
     @Override
@@ -47,14 +44,13 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         if (!fichiers.exists()) {
             fichiers.mkdir();
         }
-        File fichierUtilisateur = new File("utilisateurs");
-        if (!fichierUtilisateur.exists()) {
-            fichierUtilisateur.mkdir();
+        //File fichierUtilisateur = new File("utilisateurs");
+        if (!dossierUtilisateur.exists()) {
+            dossierUtilisateur.mkdir();
         }
-        File dossierParametres = new File("parametres");
+       // File dossierParametres = new File("parametres");
         if (!dossierParametres.exists()) {
             dossierParametres.mkdir();
-
         }
     }
 
@@ -63,7 +59,8 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         File dossierUtilisateur = new File("utilisateurs/utilisateur.uti");
         if (dossierUtilisateur.isFile())
             dossierUtilisateur.delete();
-
+        if(dossierParametres.isFile())
+            dossierParametres.delete();
 
     }
 
@@ -129,6 +126,12 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         } catch (TP3FichierException e) {
             throw new TP3Exception("Cher(e) " + e.getUtilisateur().getNom() + " " + e.getMessage() + "\n avec le fichier " + e.getFile().getName(), e.getUtilisateur());
         }
+    }
+
+    public static void main(String[] args) {
+        ApplicationUI ui = new BidonUI();
+        GestionnaireFichiers GESTION = new GestionnaireFichiers(ui);
+        GESTION.prepareDossiersRequis();
     }
 
 }
