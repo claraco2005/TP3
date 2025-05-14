@@ -36,7 +36,7 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         }
         this.ui = ui;
         this.io = new IO(propriete);
-        prepareDossiersRequis();
+
     }
 
     @Override
@@ -59,7 +59,8 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         File dossierUtilisateur = new File("utilisateurs/utilisateur.uti");
         if (dossierUtilisateur.isFile())
             dossierUtilisateur.delete();
-        if(dossierParametres.isFile())
+        File dossierParametres = new File("parametres");
+        if(dossierParametres.isDirectory())
             dossierParametres.delete();
 
     }
