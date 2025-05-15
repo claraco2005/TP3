@@ -1,22 +1,19 @@
+/*Mame Diarra Bousso Ndiaye */
 package h25.msd.poo2.etu.io;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import h25.msd.poo2.echange.AlgorithmeAvecParametreI;
 import h25.msd.poo2.echange.AlgorithmeI;
 import h25.msd.poo2.echange.ApplicationUI;
-import h25.msd.poo2.etu.algo.DecalageCle;
-import h25.msd.poo2.etu.algo.DecalageFixe;
-import h25.msd.poo2.etu.algo.DecalageParametre;
-import h25.msd.poo2.etu.algo.RotationParametre;
+
 import h25.msd.poo2.etu.exception.TP3Exception;
 
-import javax.management.MBeanAttributeInfo;
+
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,17 +21,25 @@ import java.util.Map;
 public class IO {
     private Map<String, String> propriete ;
     ApplicationUI ui;
+    String BASE_PATH= "parametres/";
 
 
     public IO(Map<String, String> propriete) {
         this.propriete = propriete;
     }
 
+    /**
+     * Sauvegarde un algo sur le disque dans le format spécifié(Json ou xml)
+     * Le fichier est enregistré dans le dossier parametres avec comme nom le de l'algo
+     *
+     * @param algo l'algo à sauvegarder
+     * @throws TP3Exception gestion erreur
+     */
     public void sauvegardeAlgo(AlgorithmeI algo) throws TP3Exception {
        String nomAlgo = algo.getNom();
        String format = propriete.get("format-fichiers-parametres");
        String nomFichier = nomAlgo + "."+ format;
-       String BASE_PATH= "parametres/";
+
 
 
             File fichier = new File(BASE_PATH + nomFichier);
@@ -50,7 +55,7 @@ public class IO {
                             mapper.writeValue(fichier, algo);
 
                         } catch (IOException e) {
-                            throw new TP3Exception("Erreur le fichier json n'a pas été créer", ui.getUtilisateur());
+                            throw new TP3Exception("erreur le fichier json n'a pas été créer", ui.getUtilisateur());
                         }
 
                     } else if (format.equals("xml")) {
@@ -60,7 +65,7 @@ public class IO {
                             xmlMapper.writeValue(fichier, algo);
 
                         } catch (IOException e) {
-                            throw new TP3Exception("Erreur le fichier xml n'a pas été créer", ui.getUtilisateur());
+                            throw new TP3Exception("erreur le fichier xml n'a pas été créer", ui.getUtilisateur());
                         }
                     }
                 }
@@ -70,13 +75,40 @@ public class IO {
 
     }
 
-    public AlgorithmeI chargeAlgo(String nomAlgoRecherche) {
+    /**Charge un algo sur le disque à partir de son nom et du format spécifier
+     * le fichier est lu depuis le dossier parametres
+     *
+     * @param nomAlgoRecherche nom de l'algo
+     * @return algo
+     * @throws TP3Exception
+     */
+    public AlgorithmeI chargeAlgo(String nomAlgoRecherche) throws TP3Exception {
+        String format = propriete.get("format-fichiers-parametres");
+        AlgorithmeI algo = null;
+        File fichier = new File(BASE_PATH + nomAlgoRecherche + "."+ format);
+        ObjectMapper mapper = null;
 
+        if(format.equals("json")){
 
-        return null;
+            mapper = new ObjectMapper();
+
+        } else if (format.equals("xml")) {
+
+            mapper = new XmlMapper();
+
+        }
+        try {
+
+            assert mapper != null;
+            algo = mapper.readValue(fichier, AlgorithmeI.class);
+            System.out.println("success");
+        } catch (IOException e) {
+            throw new TP3Exception("erreur le fichier  n'a pas été chargé", ui.getUtilisateur());
+        }
+        return algo;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws TP3Exception {
         Map<String, String> propriete = new HashMap<>();
         propriete.put("format-fichiers-parametres", "json");
         IO io = new IO(propriete);
@@ -84,5 +116,6 @@ public class IO {
 //        io.sauvegardeAlgo(new DecalageCle());
 //        io.sauvegardeAlgo(new DecalageParametre());
 //        io.sauvegardeAlgo(new DecalageFixe());
+
     }
 }

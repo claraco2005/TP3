@@ -18,13 +18,14 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
     File fichiers = new File("./");
     private IO io;
     Map<String, String> propriete;
-    Dossiers enume;
 
-    // a averifier
+
+
     private File dossierEncryption = new File("encryptions");
     private File dossierOriginaux = new File("texte-originaux");
     private File dossierParametres = new File("parametres");
     private File dossierUtilisateur = new File("utilisateurs");
+    private  File[] listeDossier = {dossierEncryption, dossierOriginaux, dossierParametres, dossierUtilisateur};
 
     public GestionnaireFichiers(ApplicationUI ui) {
         utilisateurIO = new UtilisateurIO(ui);
@@ -41,28 +42,53 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
 
     @Override
     public void prepareDossiersRequis() {
+        for(File dossier : listeDossier) {
+            if(!dossier.exists()){
+                dossier.mkdir();
+            }
+        }
         if (!fichiers.exists()) {
             fichiers.mkdir();
         }
         //File fichierUtilisateur = new File("utilisateurs");
-        if (!dossierUtilisateur.exists()) {
-            dossierUtilisateur.mkdir();
-        }
+        // if (!dossierUtilisateur.exists()) {
+        //    dossierUtilisateur.mkdir();
+        // }
        // File dossierParametres = new File("parametres");
-        if (!dossierParametres.exists()) {
-            dossierParametres.mkdir();
-        }
+    // if (!dossierParametres.exists()) {
+    //     dossierParametres.mkdir();
     }
+
 
     @Override
     public void viderDossiersFichiers() {
-        File dossierUtilisateur = new File("utilisateurs/utilisateur.uti");
-        if (dossierUtilisateur.isFile())
-            dossierUtilisateur.delete();
-        File dossierParametres = new File("parametres");
-        if(dossierParametres.isDirectory())
-            dossierParametres.delete();
+            for(File dossier : listeDossier){
+                    File[] fichier = dossier.listFiles();
+                if(fichier  != null){
+                    for(File f : fichier){
+                        f.delete();
+                    }
+                }
+            }
+        //viderContenuDossier(dossierParametres);
+        // viderContenuDossier(dossierUtilisateur);
+        //viderContenuDossier(dossierEncryption);
+        //viderContenuDossier(dossierOriginaux);
+    }
 
+    /***
+     * Supprime tous les fichiers qui sont dans le dossiers passé en parametre
+     * @param dossier le dossier a vider
+     */
+    private void viderContenuDossier(File dossier){
+        if(dossier.exists() && dossier.isDirectory()){
+            File[] fichiers = dossier.listFiles();
+            if(fichiers  != null){
+                for(File f : fichiers){
+                    f.delete();
+                }
+            }
+        }
     }
 
     /***
@@ -102,12 +128,20 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
 
     @Override
     public void sauvegarderParametreSelectionne(AlgorithmeI algo) throws TP3Exception {
+        try{
         io.sauvegardeAlgo(algo);
+        }catch (TP3FichierException t){
+            throw new TP3Exception("Cher(e) " + t.getUtilisateur().getNom() +"Il s'est produit une" + t.getMessage() + "\n avec le fichier " + t.getFile().getName(), t.getUtilisateur());
+        }
     }
 
     @Override
     public void chargeParametresDansAlgo(AlgorithmeI algoRecherche) throws TP3Exception {
-
+        try{
+            io.chargeAlgo(algoRecherche.getNom());
+        }catch (TP3FichierException t){
+            throw new TP3Exception("Cher(e) " + t.getUtilisateur().getNom() +"Il s'est produit une" + t.getMessage() + "\n avec le fichier " + t.getFile().getName(), t.getUtilisateur());
+        }
     }
 
     @Override
@@ -129,10 +163,6 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
         }
     }
 
-    public static void main(String[] args) {
-        ApplicationUI ui = new BidonUI();
-        GestionnaireFichiers GESTION = new GestionnaireFichiers(ui);
-        GESTION.prepareDossiersRequis();
-    }
+
 
 }
