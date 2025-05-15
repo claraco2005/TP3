@@ -15,17 +15,16 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
     ApplicationUI ui;
     UtilisateurIO utilisateurIO;
     TexteIO texteIO;
-    File fichiers = new File("./");
+
     private IO io;
     Map<String, String> propriete;
-
 
 
     private File dossierEncryption = new File("encryptions");
     private File dossierOriginaux = new File("texte-originaux");
     private File dossierParametres = new File("parametres");
     private File dossierUtilisateur = new File("utilisateurs");
-    private  File[] listeDossier = {dossierEncryption, dossierOriginaux, dossierParametres, dossierUtilisateur};
+    private File[] listeDossier = {dossierEncryption, dossierOriginaux, dossierParametres, dossierUtilisateur};
 
     public GestionnaireFichiers(ApplicationUI ui) {
         utilisateurIO = new UtilisateurIO(ui);
@@ -36,60 +35,34 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
             throw new RuntimeException(e);
         }
         this.ui = ui;
-        this.io = new IO(propriete);
+        this.io = new IO(ui, propriete);
 
     }
 
     @Override
     public void prepareDossiersRequis() {
-        for(File dossier : listeDossier) {
-            if(!dossier.exists()){
+        for (File dossier : listeDossier) {
+            if (!dossier.exists()) {
                 dossier.mkdir();
             }
         }
-        if (!fichiers.exists()) {
-            fichiers.mkdir();
-        }
-        //File fichierUtilisateur = new File("utilisateurs");
-        // if (!dossierUtilisateur.exists()) {
-        //    dossierUtilisateur.mkdir();
-        // }
-       // File dossierParametres = new File("parametres");
-    // if (!dossierParametres.exists()) {
-    //     dossierParametres.mkdir();
+
     }
 
 
     @Override
     public void viderDossiersFichiers() {
-            for(File dossier : listeDossier){
-                    File[] fichier = dossier.listFiles();
-                if(fichier  != null){
-                    for(File f : fichier){
-                        f.delete();
-                    }
-                }
-            }
-        //viderContenuDossier(dossierParametres);
-        // viderContenuDossier(dossierUtilisateur);
-        //viderContenuDossier(dossierEncryption);
-        //viderContenuDossier(dossierOriginaux);
-    }
-
-    /***
-     * Supprime tous les fichiers qui sont dans le dossiers passé en parametre
-     * @param dossier le dossier a vider
-     */
-    private void viderContenuDossier(File dossier){
-        if(dossier.exists() && dossier.isDirectory()){
-            File[] fichiers = dossier.listFiles();
-            if(fichiers  != null){
-                for(File f : fichiers){
+        for (File dossier : listeDossier) {
+            File[] fichier = dossier.listFiles();
+            if (fichier != null) {
+                for (File f : fichier) {
                     f.delete();
                 }
             }
         }
+
     }
+
 
     /***
      * Enregistre le texte reçu en paramètre dans le fichier reçu en paramètre à l’aide de la classe
@@ -123,24 +96,24 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
 
     @Override
     public File getDossier(Dossiers dossier) {
-        return new File("fichiers/"+dossier.name());
+        return new File("fichiers/" + dossier.name());
     }
 
     @Override
     public void sauvegarderParametreSelectionne(AlgorithmeI algo) throws TP3Exception {
-        try{
-        io.sauvegardeAlgo(algo);
-        }catch (TP3FichierException t){
-            throw new TP3Exception("Cher(e) " + t.getUtilisateur().getNom() +"Il s'est produit une" + t.getMessage() + "\n avec le fichier " + t.getFile().getName(), t.getUtilisateur());
+        try {
+            io.sauvegardeAlgo(algo);
+        } catch (TP3FichierException t) {
+            throw new TP3Exception("Cher(e) " + t.getUtilisateur().getNom() + "Il s'est produit une" + t.getMessage() + "\n avec le fichier " + t.getFile().getName(), t.getUtilisateur());
         }
     }
 
     @Override
     public void chargeParametresDansAlgo(AlgorithmeI algoRecherche) throws TP3Exception {
-        try{
+        try {
             io.chargeAlgo(algoRecherche.getNom());
-        }catch (TP3FichierException t){
-            throw new TP3Exception("Cher(e) " + t.getUtilisateur().getNom() +"Il s'est produit une" + t.getMessage() + "\n avec le fichier " + t.getFile().getName(), t.getUtilisateur());
+        } catch (TP3FichierException t) {
+            throw new TP3Exception("Cher(e) " + t.getUtilisateur().getNom() + "Il s'est produit une" + t.getMessage() + "\n avec le fichier " + t.getFile().getName(), t.getUtilisateur());
         }
     }
 
@@ -162,7 +135,6 @@ public class GestionnaireFichiers implements GestionnaireFichierI {
             throw new TP3Exception("Cher(e) " + e.getUtilisateur().getNom() + " " + e.getMessage() + "\n avec le fichier " + e.getFile().getName(), e.getUtilisateur());
         }
     }
-
 
 
 }
